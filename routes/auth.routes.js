@@ -47,15 +47,15 @@ router.post("/signup", (req, res, next) => {
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashedPassword = bcrypt.hashSync(password, salt);
 
-      return User.create({ email, password: hashedPassword });
+      return User.create({ email, hashedPassword });
     })
     .then((createdUser) => {
       const { email, name, _id } = createdUser;
-      const user = { email, name, _id };
+      const user = { email, username, _id };
       res.status(201).json({ user: user });
     })
     .catch((error) => {
-      econsole.log(error);
+      console.log(error);
       res.status(500).json({ message: "Internal Server Error" });
     });
 });
@@ -77,7 +77,10 @@ router.post("/login", (req, res, next) => {
         return;
       }
 
-      const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
+      const passwordCorrect = bcrypt.compareSync(
+        password,
+        foundUser.hashedPassword
+      );
 
       if (passwordCorrect) {
         const { _id, email, username } = foundUser;
