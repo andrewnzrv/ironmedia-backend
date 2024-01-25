@@ -60,7 +60,7 @@ router.delete("/:userId", isAuthenticated, async (req, res) => {
   try {
     const userToDelete = await User.findById(userId);
     if (userToDelete._id == loggedInUserId) {
-      const updatedUser = await User.findByIdAndDelete(userId);
+      await User.findByIdAndDelete(userId);
       res.status(204).json({ message: "User has been deleted" });
     } else {
       res
