@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
 
 const userSchema = new Schema(
   {
@@ -11,6 +12,10 @@ const userSchema = new Schema(
     },
     hashedPassword: { type: String, required: true },
     username: { type: String },
+    blogPosts: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "BlogPost",
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

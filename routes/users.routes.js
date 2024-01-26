@@ -44,7 +44,6 @@ router.put("/:userId", isAuthenticated, async (req, res) => {
       res
         .status(403)
         .json({ message: "You do not have rights to update this user " });
-      console.log("----->   " + userToUpdate._id + " | " + loggedInUserId);
     }
   } catch (error) {
     console.log(error);

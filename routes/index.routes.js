@@ -7,4 +7,7 @@ router.get("/", (req, res) => {
 const usersRouter = require("./users.routes");
 router.use("/users", usersRouter);
 
+const blogPostsRouter = require("./blogPosts.routes");
+router.use("/blog-posts", blogPostsRouter);
+
 module.exports = router;
