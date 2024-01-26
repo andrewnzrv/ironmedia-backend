@@ -42,18 +42,20 @@ router.post("/signup", (req, res, next) => {
       if (foundUser) {
         res.status(400).json({ message: "User already exists" });
         return;
+      } else {
+        const salt = bcrypt.genSaltSync(saltRounds);
+        const hashedPassword = bcrypt.hashSync(password, salt);
+
+        return User.create({ email, username, hashedPassword })
+        .then((createdUser) => {
+          const { email, username, _id } = createdUser;
+          console.log(createdUser);
+          const user = { email, username, _id };
+          res.status(201).json({ user: user });
+        });
       }
-
-      const salt = bcrypt.genSaltSync(saltRounds);
-      const hashedPassword = bcrypt.hashSync(password, salt);
-
-      return User.create({ email, username, hashedPassword });
     })
-    .then((createdUser) => {
-      const { email, username, _id } = createdUser;
-      const user = { email, username, _id };
-      res.status(201).json({ user: user });
-    })
+
     .catch((error) => {
       console.log(error);
       res.status(500).json({ message: "Internal Server Error" });
