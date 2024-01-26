@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
 
 const blogPostSchema = new Schema({
   title: {
@@ -10,7 +11,8 @@ const blogPostSchema = new Schema({
     required: true,
   },
   author: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   createdAt: {
     type: Date,
