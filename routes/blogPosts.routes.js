@@ -35,7 +35,6 @@ router.post("/", isAuthenticated, async (req, res) => {
 
   try {
     const createdBlogPost = await BlogPost.create(payload);
-    console.log(req.tokenPayload._id);
     res.status(201).json(createdBlogPost);
   } catch (error) {
     console.log(error);
@@ -64,7 +63,6 @@ router.put("/:blogPostId", isAuthenticated, async (req, res) => {
       res
         .status(403)
         .json({ message: "You do not have rights to update this blog post" });
-      console.log(blogPostToUpdate);
     }
   } catch (error) {
     console.log(error);
@@ -85,7 +83,7 @@ router.delete("/:blogPostId", isAuthenticated, async (req, res) => {
     } else {
       res
         .status(403)
-        .json({ message: "You do not have rights to delete this blog post " });
+        .json({ message: "You do not have rights to delete this blog post" });
     }
   } catch (error) {
     res.status(500).json({ message: "Error while deleting the blog post" });
