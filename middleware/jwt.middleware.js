@@ -16,4 +16,23 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 
-module.exports = { isAuthenticated };
+const multer = require("multer");
+const path = require("path");
+
+// Set up storage for Multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Set the destination folder for uploaded images
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+// Create the Multer middleware
+const upload = multer({ storage: storage });
+
+module.exports = { isAuthenticated, upload };
