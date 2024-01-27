@@ -8,6 +8,8 @@ const cors = require("cors");
 const express = require("express");
 
 const app = express();
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ limit: "5mb", extended: true }));
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require("./config")(app);

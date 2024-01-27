@@ -10,6 +10,9 @@ const blogPostSchema = new Schema({
     type: String,
     required: true,
   },
+  imageFile: {
+    type: String,
+  },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
