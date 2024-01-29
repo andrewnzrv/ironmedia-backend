@@ -12,10 +12,12 @@ const userSchema = new Schema(
     },
     hashedPassword: { type: String, required: true },
     username: { type: String },
-    blogPosts: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "BlogPost",
-    },
+    blogPosts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "BlogPost",
+      },
+    ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

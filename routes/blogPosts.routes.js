@@ -1,12 +1,15 @@
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 const BlogPost = require("../models/BlogPost.model");
+const User = require("../models/User.model");
 
 const router = require("express").Router();
 
 // GET all
 router.get("/", async (req, res) => {
   try {
-    const allBlogPosts = await BlogPost.find();
+    const allBlogPosts = await BlogPost.find()
+      .populate("author")
+      .populate("comments");
     res.status(200).json(allBlogPosts);
   } catch (error) {
     console.log(error);
@@ -19,7 +22,12 @@ router.get("/:blogPostId", async (req, res) => {
   const { blogPostId } = req.params;
 
   try {
-    const oneBlogPost = await BlogPost.findById(blogPostId);
+    const oneBlogPost = await BlogPost.findById(blogPostId)
+      .populate("author")
+      .populate({
+        path: "comments",
+        populate: { path: "user", select: "username" },
+      });
     res.status(200).json(oneBlogPost);
   } catch (error) {
     console.log(error);
@@ -35,6 +43,11 @@ router.post("/", isAuthenticated, async (req, res) => {
 
   try {
     const createdBlogPost = await BlogPost.create(payload);
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $push: { blogPosts: createdBlogPost._id } },
+      { new: true }
+    );
     res.status(201).json(createdBlogPost);
   } catch (error) {
     console.log(error);
