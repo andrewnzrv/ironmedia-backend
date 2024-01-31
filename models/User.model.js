@@ -11,7 +11,7 @@ const userSchema = new Schema(
       unique: true,
     },
     hashedPassword: { type: String, required: true },
-    username: { type: String },
+    username: { type: String, required: true, unique: true },
     blogPosts: [
       {
         type: mongoose.Schema.Types.ObjectId,

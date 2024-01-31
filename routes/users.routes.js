@@ -27,6 +27,23 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
+// GET all posts from user
+router.get("/:userId/art", async (req, res) => {
+  const { userId } = req.params;
+  console.log(`USERID: ${userId}`);
+  try {
+    const user = await User.findById(userId).populate("blogPosts");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user.blogPosts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 // PUT one
 router.put("/:userId", isAuthenticated, async (req, res) => {
   const { userId } = req.params;
